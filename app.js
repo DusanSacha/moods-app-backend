@@ -70,12 +70,27 @@ app.get('/hashtag/:hash', function(req,res) {
 	var now = new Date();
 	var today = new Date(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate());
 	var tomorrow = new Date(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()+1);
-	Mood.count({created:{"$gte": today, "$lt": tomorrow}, hashtag: req.params.hash}, function(err, count) {
+
+	var hashtag = req.params.hash;
+	
+	Mood.count({created:{"$gte": today, "$lt": tomorrow}}, function(err, count) {
 	 		if (err) {
 		  		res.sendStatus(500);
 		  		console.error(err);
 		  	} else {
-		  		res.send({count:count});	
+		  		var countAll = count;
+
+	  		 	Mood.count({created:{"$gte": today, "$lt": tomorrow}, hashtag: hashtag}, function(err, countSingle) {
+				 		if (err) {
+					  		res.sendStatus(500);
+					  		console.error(err);
+					  	} else {
+					  		var percentage = Math.round(countSingle / (countAll / 100));
+					  		res.send({percentage: percentage});	
+					  	}
+					}
+				);
+
 		  	}
 		}
 	);
