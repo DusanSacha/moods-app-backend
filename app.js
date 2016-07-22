@@ -86,7 +86,7 @@ app.get('/hashtag/:hash', function(req,res) {
 					  		console.error(err);
 					  	} else {
 					  		var percentage = Math.round(countSingle / (countAll / 100));
-					  		res.send({percentage: percentage});	
+					  		res.send({hashtag: hashtag, percentage: percentage});	
 					  	}
 					}
 				);
