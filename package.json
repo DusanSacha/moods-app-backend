@@ -1,16 +1,17 @@
 {
-	"name":"moods",
-	"version": "0.1.0",
-	"description": "Moods",
-	"main": "app.js",
-	"scripts": {
-    	"start": "node app.js"
-  	},
-	"dependencies": {
-		"express": "~4.13.3"
-	},
-	"engines": {
-    	"node": ">=4.0.0"
-  	},
-	"author": "Dusan Sacha"
+  "name": "moods",
+  "version": "0.1.0",
+  "description": "Moods",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "~4.13.3"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "author": "Dusan Sacha"
 }
