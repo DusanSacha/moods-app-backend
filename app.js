@@ -27,6 +27,10 @@ app.use(allowCrossDomain);
 var StaticTrend = require('./models/StaticTrend.js');
 var Mood = require('./models/Mood.js');
 
+//Controllers
+var staticController = require('./controllers/static');
+var moodsController = require('./controllers/moods');
+
 //Database Connection 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/moods');
 
@@ -36,65 +40,12 @@ db.once('open', function() {
   console.log("connected")
 });
 
+
 //Routes
-app.get('/static_trends', function(req,res) {
-	StaticTrend.find(function (err, trends) {
-	  if (err) {
-	  	res.sendStatus(500);
-	  	console.error(err);
-	  } else {
-	  	res.send(trends);	
-	  }
-	});
-});
-
-app.post('/moods', function(req,res) {
-	
-	req.body.ip = req.connection.remoteAddress;
-	var mood = new Mood (req.body);
-
-	mood.save(function(err, mood) {
-
-	  if (err) {
-	  	res.sendStatus(500);
-	  	console.error(err);
-	  } else {
-	  	res.sendStatus(200);	
-	  }
-
-	});
-  	
-});
-
-app.get('/hashtag/:hash', function(req,res) {
-	var now = new Date();
-	var today = new Date(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate());
-	var tomorrow = new Date(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()+1);
-
-	var hashtag = req.params.hash;
-	
-	Mood.count({created:{"$gte": today, "$lt": tomorrow}}, function(err, count) {
-	 		if (err) {
-		  		res.sendStatus(500);
-		  		console.error(err);
-		  	} else {
-		  		var countAll = count;
-
-	  		 	Mood.count({created:{"$gte": today, "$lt": tomorrow}, hashtag: hashtag}, function(err, countSingle) {
-				 		if (err) {
-					  		res.sendStatus(500);
-					  		console.error(err);
-					  	} else {
-					  		var percentage = Math.round(countSingle / (countAll / 100));
-					  		res.send({hashtag: hashtag, percentage: percentage});	
-					  	}
-					}
-				);
-
-		  	}
-		}
-	);
-});
+app.get('/static_trends', staticController.staticData);
+app.post('/moods', moodsController.sendMood);
+app.get('/hashtag/:hash', moodsController.getPercentage);
+app.get('/map', moodsController.getPolygons);
 
 app.use(function(req,res) {
 	res.sendStatus(404);
