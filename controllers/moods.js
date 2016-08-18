@@ -1,7 +1,8 @@
 var Mood = require('../models/Mood.js');
+var StaticTrend = require('../models/StaticTrend.js');
+
 
 exports.sendMood = function(req,res) {
-	
 	req.body.ip = req.connection.remoteAddress;
 	var mood = new Mood (req.body);
 
@@ -20,8 +21,8 @@ exports.sendMood = function(req,res) {
 
 exports.getPercentage = function(req,res) {
 	var now = new Date();
-	var yesterday = new Date(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate() - 1 ,
-						now.getUTCHours(),now.getUTCMinutes() - now.getTimezoneOffset(),now.getUTCSeconds(),now.getUTCMilliseconds());	
+	var yesterday = new Date();
+	yesterday.setDate(now.getDate() - 1);
 
 	var hashtag = req.params.hash;
 	var age = req.query.age;
@@ -45,22 +46,62 @@ exports.getPercentage = function(req,res) {
 		education = [parseInt(education)];
 	}
 
-	Mood.count({created:{"$gte": yesterday, "$lte": now}, age:{"$in":age}, gender:{"$in":gender}, education:{"$in":education}}, function(err, count) {
+	Mood.count(
+		{	created:{"$gte": yesterday,"$lte": now},
+			age:{"$in":age},
+			gender:{"$in":gender},
+			education:{"$in":education}
+		},
+		function(err, count) {
 	 		if (err) {
 		  		res.sendStatus(500);
 		  		console.error(err);
 		  	} else {
 		  		var countAll = count;
 
-	  		 	Mood.count({created:{"$gte": yesterday, "$lte": now}, age:{"$in":age}, gender:{"$in":gender}, education:{"$in":education}, hashtag: hashtag}, function(err, countSingle) {
+	  		 	Mood.count(
+	  		 		{	created:{"$gte": yesterday, "$lte": now},
+	  		 			age:{"$in":age},
+	  		 			gender:{"$in":gender},
+	  		 			education:{"$in":education},
+	  		 			hashtag: hashtag,
+	  		 			mood:{"$in":[0,1,2,3,4,5]}
+	  		 		},
+	  		 		function(err, countNeg) {
 				 		if (err) {
 					  		res.sendStatus(500);
 					  		console.error(err);
 					  	} else {
-					  		var percentage = Math.round(countSingle / (countAll / 100));
-					  		console.log(percentage+"test");
-					  		(isNaN(percentage)) ? (percentage = 0) : null;
-					  		res.send({hashtag: hashtag, percentage: percentage, age:age, gender:gender, education:education});	
+					  		var percent_neg = Math.round(countNeg / (countAll / 100));
+					  		(isNaN(percent_neg)) ? (percent_neg = 0) : null;
+
+				  			Mood.count(
+				  				{	created:{"$gte": yesterday, "$lte": now},
+				  		 			age:{"$in":age},
+				  		 			gender:{"$in":gender},
+				  		 			education:{"$in":education},
+				  		 			hashtag: hashtag,
+				  		 			mood:{"$in":[6,7,8,9,10]}
+	  		 					
+				  			}, function(err, countPos) {
+				  				if (err) {
+					  				res.sendStatus(500);
+					  				console.error(err);
+					  			} else {
+					  				var percent_pos = Math.round(countPos / (countAll / 100));
+					  				(isNaN(percent_pos)) ? (percent_pos = 0) : null;
+
+					  				res.send({hashtag: hashtag,
+				  						percent_neg: percent_neg,
+				  						percent_pos: percent_pos,
+					  					age:age,
+					  					gender:gender,
+					  					education:education
+					  				});	
+					  			}
+				  			});
+
+					  		
 					  	}
 					}
 				);
@@ -70,16 +111,25 @@ exports.getPercentage = function(req,res) {
 	);
 };
 
-exports.getPolygons = function(req,res) {
 
-//TODO returns all geoJson polygons within screen parameter
-// console.log(req.query.screen);
-// var screens = req.query.screen;
+function getObject(obj) {
+	return new Promise(function (resolve, reject) {
+        obj.count({}, function(err,count) {
+             if(err) reject();
+             else resolve(count);
+        });
+    });
+};
 
-// for (i = 0; i < screens.length; ++i) {
-// 	screens[i]
-// } 
+exports.getTest = function(req,res) {
+	Promise.all([getObject(Mood), getObject(StaticTrend)]).then(function success(result) {
+		res.send({'count1':result[0],'count2':result[1]});
+	});
+	// Mood.count({},function(err,count){
+	// 	res.send({count:count});
+	// });
 
-// console.log(screen instanceof Array);
-// res.sendStatus(200);
+	// StaticTrend.count({},function(err,count){
+	// 	res.send({count:count});
+	// });
 };

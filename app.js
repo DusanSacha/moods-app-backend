@@ -23,13 +23,10 @@ var allowCrossDomain = function(req, res, next) {
 
 app.use(allowCrossDomain);
 
-//Mongoose models
-var StaticTrend = require('./models/StaticTrend.js');
-var Mood = require('./models/Mood.js');
-
 //Controllers
 var staticController = require('./controllers/static');
 var moodsController = require('./controllers/moods');
+var polygonsController = require('./controllers/polygons');
 
 //Database Connection 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/moods');
@@ -45,7 +42,8 @@ db.once('open', function() {
 app.get('/static_trends', staticController.staticData);
 app.post('/moods', moodsController.sendMood);
 app.get('/hashtag/:hash', moodsController.getPercentage);
-app.get('/map', moodsController.getPolygons);
+app.post('/map', polygonsController.getPolygons);
+app.get('/test', moodsController.getTest);
 
 app.use(function(req,res) {
 	res.sendStatus(404);
