@@ -10,10 +10,10 @@ exports.getPolygons = function(req,res) {
 	          	$geometry: {
 	            	type: type,
 	             	coordinates: coordinates,
-	             	zoom:zoom
 	        	}
-	       }
-	    }
+	        }
+	    },
+	    zoom:zoom
 	};
 
 	Polygon.find(screen,function (err, trends) {
