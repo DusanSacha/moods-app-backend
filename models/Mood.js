@@ -8,7 +8,8 @@ var moodSchema = new mongoose.Schema({
   age: { type: Number, min: 0, max: 7, default: 0 },
   gender: {type: String, enum: ["M","F","X"], default: "X"},
   education: { type: Number, min: 0, max: 6, default: 0 },
-  created: {type: Date, default: Date.now}
+  created: {type: Date, default: Date.now},
+  user: String
 });
 
 module.exports = mongoose.model('Mood', moodSchema);
