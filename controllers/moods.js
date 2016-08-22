@@ -57,21 +57,21 @@ exports.getPercentage = function(req,res) {
 	yesterday.setDate(now.getDate() - 1);
 
 	var hashtag = req.params.hash;
-	var age = req.query.age;
+	var age = req.query.a;
 	if (age === undefined) {
 		age = [0,1,2,3,4,5,6,7];
 	} else if (!(age instanceof Array)) {
 		age = [parseInt(age)];
 	}
 
-	var gender = req.query.gender;
+	var gender = req.query.g;
 	if (gender === undefined) {
 		gender = ["M","F","X"];
 	} else if (!(gender instanceof Array)) {
 		gender = [(gender)];
 	}
 
-	var education = req.query.education;
+	var education = req.query.e;
 	if (education === undefined) {
 		education = [0,1,2,3,4,5];
 	} else if (!(education instanceof Array)) {
