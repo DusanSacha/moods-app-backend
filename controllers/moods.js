@@ -1,4 +1,5 @@
 var Mood = require('../models/Mood.js');
+var Region = require('../models/Region.js');
 var StaticTrend = require('../models/StaticTrend.js');
 
 
@@ -6,16 +7,47 @@ exports.sendMood = function(req,res) {
 	req.body.ip = req.connection.remoteAddress;
 	var mood = new Mood (req.body);
 
-	mood.save(function(err, mood) {
+	if (req.body.location === undefined) {
 
-	  if (err) {
-	  	res.sendStatus(500);
-	  	console.error(err);
-	  } else {
-	  	res.sendStatus(200);	
-	  }
+		if (mood.region > 9) {
+			mood.region = 0;	
+		}
 
-	});
+		var region = mood.region;
+
+		Region.findOne({regionId:region}
+			,function(err,location){
+				if (err) {
+		  			res.sendStatus(500);
+		  			console.error(err);
+		  		} else {
+		  	 		mood.location = location.location;
+		  			mood.save(function(err, mood) {
+
+						if (err) {
+						  res.sendStatus(500);
+						  console.error(err);
+						} else {
+						  res.sendStatus(200);	
+						}
+
+					});	
+		  		}
+			});
+
+	} else {
+
+		mood.save(function(err, mood) {
+
+		  if (err) {
+		  	res.sendStatus(500);
+		  	console.error(err);
+		  } else {
+		  	res.sendStatus(200);	
+		  }
+
+		});
+	}
   	
 };
 
@@ -41,63 +73,67 @@ exports.getPercentage = function(req,res) {
 
 	var education = req.query.education;
 	if (education === undefined) {
-		education = [0,1,2,3,4,5,6];
+		education = [0,1,2,3,4,5];
 	} else if (!(education instanceof Array)) {
 		education = [parseInt(education)];
 	}
 
-	Mood.count(
-		{	created:{"$gte": yesterday,"$lte": now},
+	var filter = {
+			created:{"$gte": yesterday,"$lte": now},
 			age:{"$in":age},
 			gender:{"$in":gender},
 			education:{"$in":education}
-		},
-		function(err, count) {
+		};
+
+	Mood.count(filter,
+		function(err, countAll) {
 	 		if (err) {
 		  		res.sendStatus(500);
 		  		console.error(err);
 		  	} else {
-		  		var countAll = count;
-
-	  		 	Mood.count(
-	  		 		{	created:{"$gte": yesterday, "$lte": now},
-	  		 			age:{"$in":age},
-	  		 			gender:{"$in":gender},
-	  		 			education:{"$in":education},
-	  		 			hashtag: hashtag,
-	  		 			mood:{"$in":[0,1,2,3,4,5]}
-	  		 		},
-	  		 		function(err, countNeg) {
+		  		filter.hashtag = hashtag;
+	  		 	Mood.count(filter,
+	  		 		function(err, countSingle) {
 				 		if (err) {
 					  		res.sendStatus(500);
 					  		console.error(err);
 					  	} else {
-					  		var percent_neg = Math.round(countNeg / (countAll / 100));
-					  		(isNaN(percent_neg)) ? (percent_neg = 0) : null;
+					  		var percent_sum = Math.round(countSingle / (countAll / 100));
+					  		(isNaN(percent_sum)) ? (percent_sum = 0) : null;
 
-				  			Mood.count(
-				  				{	created:{"$gte": yesterday, "$lte": now},
-				  		 			age:{"$in":age},
-				  		 			gender:{"$in":gender},
-				  		 			education:{"$in":education},
-				  		 			hashtag: hashtag,
-				  		 			mood:{"$in":[6,7,8,9,10]}
-	  		 					
-				  			}, function(err, countPos) {
+					  		filter.mood = {"$in":[0,1,2,3]};
+				  			Mood.count(filter,
+				  				function(err, countNegative) {
 				  				if (err) {
 					  				res.sendStatus(500);
 					  				console.error(err);
 					  			} else {
-					  				var percent_pos = Math.round(countPos / (countAll / 100));
-					  				(isNaN(percent_pos)) ? (percent_pos = 0) : null;
+					  				var percent_neg = Math.round(countNegative / (countSingle / 100));
+					  				(isNaN(percent_neg)) ? (percent_neg = 0) : null;
 
-					  				res.send({hashtag: hashtag,
-				  						percent_neg: percent_neg,
-				  						percent_pos: percent_pos,
-					  					age:age,
-					  					gender:gender,
-					  					education:education
-					  				});	
+					  				filter.mood = {"$in":[7,8,9,10]};
+					  				Mood.count (filter,
+					  					function(err,countPositive){
+					  					if (err) {
+					  						res.sendStatus(500);
+					  						console.error(err);					  						
+					  					} else {
+					  						var percent_pos = Math.round(countPositive / (countSingle / 100));
+					  						(isNaN(percent_pos)) ? (percent_pos = 0) : null;
+
+					  						res.send({hashtag: hashtag,
+				  								percent_neg: percent_neg,
+				  								percent_pos: percent_pos,
+				  								percent_neu: 100 - percent_neg - percent_pos,
+				  								percent_sum: percent_sum,
+					  							age:age,
+					  							gender:gender,
+					  							education:education
+					  		 				});						  						
+					  					}
+					  				});
+
+					  				
 					  			}
 				  			});
 
@@ -109,27 +145,4 @@ exports.getPercentage = function(req,res) {
 		  	}
 		}
 	);
-};
-
-
-function getObject(obj) {
-	return new Promise(function (resolve, reject) {
-        obj.count({}, function(err,count) {
-             if(err) reject();
-             else resolve(count);
-        });
-    });
-};
-
-exports.getTest = function(req,res) {
-	Promise.all([getObject(Mood), getObject(StaticTrend)]).then(function success(result) {
-		res.send({'count1':result[0],'count2':result[1]});
-	});
-	// Mood.count({},function(err,count){
-	// 	res.send({count:count});
-	// });
-
-	// StaticTrend.count({},function(err,count){
-	// 	res.send({count:count});
-	// });
 };

@@ -43,7 +43,6 @@ app.get('/static_trends', staticController.staticData);
 app.post('/moods', moodsController.sendMood);
 app.get('/hashtag/:hash', moodsController.getPercentage);
 app.post('/map', polygonsController.getPolygons);
-app.get('/test', moodsController.getTest);
 
 app.use(function(req,res) {
 	res.sendStatus(404);
