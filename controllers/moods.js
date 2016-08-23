@@ -1,8 +1,11 @@
+//Moods Controller
+
+//required files
 var Mood = require('../models/Mood.js');
 var Region = require('../models/Region.js');
 var StaticTrend = require('../models/StaticTrend.js');
 
-
+//POST Method sendMood called by /moods router from app.js
 exports.sendMood = function(req,res) {
 	req.body.ip = req.connection.remoteAddress;
 	var mood = new Mood (req.body);
