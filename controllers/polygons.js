@@ -32,7 +32,7 @@ function getPolygonData(polygon) {
        							polygon.properties.fill = "#1fa305"; 
        							break; 
        					}
-       					polygon.properties.opacity = "0.5";
+       					polygon.properties["fill-opacity"] = "0.5";
 						      					
 		   			}
 					resolve(polygon);
