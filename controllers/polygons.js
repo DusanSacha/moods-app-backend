@@ -76,7 +76,13 @@ exports.getPolygons = function(req,res) {
   			}
 
 	    	Promise.all(promises).then(function (result){
-	    		res.send(result);
+
+	    		var geoJsonCollection = {
+	    			 "type": "FeatureCollection",
+  					 "features": result
+	    		};
+	    		
+	    		res.send(geoJsonCollection);
 	    	});	  		 
 	    }
 	});
