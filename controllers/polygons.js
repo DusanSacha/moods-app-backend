@@ -1,6 +1,10 @@
+//Polygon Controller
+
+//required files
 var Polygon = require('../models/Polygon.js');
 var Mood = require('../models/Mood.js');
 
+//Function getPolygonData writes properties fill and fill-opacity to the polygon object
 function getPolygonData(polygon) {
 	return new Promise(function(resolve, reject){
 		Mood.find({location: {
@@ -23,16 +27,16 @@ function getPolygonData(polygon) {
 
        					switch (true) {
        						case (average <= 3):
-       							polygon.properties.fill = "#ff2600"; 
+       							polygon.properties.fill = "#ff2600";  // red
        							break;
 							case (average > 3 && average < 7 ):
-       							polygon.properties.fill = "#c7c732"; 
+       							polygon.properties.fill = "#c7c732"; // orange
        							break;
        						case (average >= 7 && average <= 10 ):
-       							polygon.properties.fill = "#1fa305"; 
+       							polygon.properties.fill = "#1fa305";  // green
        							break; 
        					}
-       					polygon.properties["fill-opacity"] = "0.5";
+       					polygon.properties["fill-opacity"] = 0.5;
 						      					
 		   			}
 					resolve(polygon);
@@ -42,6 +46,7 @@ function getPolygonData(polygon) {
 	});
 }
 
+//POST Method getPolygons called by /map router from app.js
 exports.getPolygons = function(req,res) {
 	var type = req.body.type;
 	var coordinates = req.body.coordinates;

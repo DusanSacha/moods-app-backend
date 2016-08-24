@@ -8,7 +8,7 @@ var polygonSchema = new mongoose.Schema({
 		title: String,
 		name: String,
 		fill: String,
-		"fill-opacity": String
+		"fill-opacity": Number
 	},
 	geometry: mongoose.Schema.Types.Polygon
 });
