@@ -8,13 +8,16 @@ var Polygon = require('../models/Polygon.js');
 var Mood = require('../models/Mood.js');
 
 //Function getPolygonData writes properties fill and fill-opacity to the polygon object
-function getPolygonData(polygon) {
+function getPolygonData(polygon,filter) {
 	return new Promise(function(resolve, reject){
-		Mood.find({location: {
-				$geoWithin: {
-      				$geometry: {type: polygon.geometry.type, coordinates: polygon.geometry.coordinates}
-   				}
-   				}},function(err, moods){
+
+		filter.location = {
+			$geoWithin: {
+      			$geometry: {type: polygon.geometry.type, coordinates: polygon.geometry.coordinates}
+   			}
+   		};
+
+		Mood.find(filter,function(err, moods){
    				if(err) {
    					reject();
    				} else {
@@ -26,8 +29,8 @@ function getPolygonData(polygon) {
        						sum += mood.mood;
        					});
        					var average = Math.round(sum / moods.length);
-
-       					switch (true) {
+   						console.log(average);
+   						switch (true) {
        						case (average <= 3):
        							polygon.properties.fill = "#ff2600";  // red
        							break;
@@ -53,7 +56,24 @@ exports.getPolygons = function(req,res) {
 	var type = req.body.type;
 	var coordinates = req.body.coordinates;
 	var zoom = req.body.zoom;
-	console.log(type);
+	var age = req.body.age;
+	var education = req.body.education;
+	var gender = req.body.gender;
+	var hashtag = req.body.hashtag;
+
+	if (hashtag.length == 0) {
+		hashtag[0] = "vanderbellen";
+		hashtag[1] = "wahlen2016";
+		hashtag[2] = "norberthofer";
+	}
+
+	var filter = {
+		age:{"$in":age},
+		gender:{"$in":gender},
+		education:{"$in":education},
+		hashtag:{"$in":hashtag}
+	};
+
 	var screen = {
 	    geometry: {
 	       	$geoIntersects: {
@@ -75,7 +95,7 @@ exports.getPolygons = function(req,res) {
     		
     		var promises = [];
     		for (var i in polygons) {
-  		  		promises.push(getPolygonData(polygons[i]));
+  		  		promises.push(getPolygonData(polygons[i],filter));
   			}
 
 	    	Promise.all(promises).then(function (result){

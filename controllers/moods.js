@@ -1,11 +1,16 @@
-//Moods Controller
+/**
+ * Moods controller module.
+ * @module controllers/moods
+ */
 
 //required files
 var Mood = require('../models/Mood.js');
 var Region = require('../models/Region.js');
 var StaticTrend = require('../models/StaticTrend.js');
 
-//POST Method sendMood called by /moods router from app.js
+/** Send Mood 
+*	
+*/
 exports.sendMood = function(req,res) {
 	req.body.ip = req.connection.remoteAddress;
 	var mood = new Mood (req.body);
@@ -62,21 +67,21 @@ exports.getPercentage = function(req,res) {
 	var hashtag = req.params.hash;
 	var age = req.query.a;
 	if (age === undefined) {
-		age = [0,1,2,3,4,5,6,7];
+		age = [];
 	} else if (!(age instanceof Array)) {
 		age = [parseInt(age)];
 	}
 
 	var gender = req.query.g;
 	if (gender === undefined) {
-		gender = ["M","F","X"];
+		gender = [];
 	} else if (!(gender instanceof Array)) {
 		gender = [(gender)];
 	}
 
 	var education = req.query.e;
 	if (education === undefined) {
-		education = [0,1,2,3,4,5];
+		education = [];
 	} else if (!(education instanceof Array)) {
 		education = [parseInt(education)];
 	}
