@@ -10,7 +10,7 @@ var polygonSchema = new mongoose.Schema({
 		fill: String,
 		"fill-opacity": Number
 	},
-	geometry: mongoose.Schema.Types.Polygon
+	geometry: mongoose.Schema.Types.GeoJSON
 });
 
 module.exports = mongoose.model('Polygon', polygonSchema);

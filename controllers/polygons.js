@@ -1,4 +1,7 @@
-//Polygon Controller
+/**
+ * Polygons controller module.
+ * @module controllers/polygons
+ */
 
 //required files
 var Polygon = require('../models/Polygon.js');
@@ -15,7 +18,6 @@ function getPolygonData(polygon) {
    				if(err) {
    					reject();
    				} else {
-
    					//if there is a mood found within this polygon
    					//then count the average and send out the color paramters
    					if (moods.length) {
@@ -51,6 +53,7 @@ exports.getPolygons = function(req,res) {
 	var type = req.body.type;
 	var coordinates = req.body.coordinates;
 	var zoom = req.body.zoom;
+	console.log(type);
 	var screen = {
 	    geometry: {
 	       	$geoIntersects: {
@@ -76,14 +79,15 @@ exports.getPolygons = function(req,res) {
   			}
 
 	    	Promise.all(promises).then(function (result){
-
 	    		var geoJsonCollection = {
 	    			 "type": "FeatureCollection",
   					 "features": result
 	    		};
-	    		
+
 	    		res.send(geoJsonCollection);
-	    	});	  		 
+	    	}).catch(function(err) {
+  				console.log(err.message);
+			});	  		 
 	    }
 	});
 };

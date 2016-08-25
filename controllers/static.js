@@ -1,3 +1,7 @@
+/**
+ * StaticTrend controller module.
+ * @module controllers/static
+ */
 
 var StaticTrend = require('../models/StaticTrend.js');
 

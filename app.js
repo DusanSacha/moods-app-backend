@@ -1,12 +1,12 @@
-//Main app settings
 var express = require('express');
 var mongoose = require('mongoose');
 var app = express();
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser'); //important for reading request parameters
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || 5000)); //port check: 5000 = localhost
 
+//allowing OPTIONS method
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -23,7 +23,7 @@ var allowCrossDomain = function(req, res, next) {
 
 app.use(allowCrossDomain);
 
-//Controllers
+//Controllers definition
 var staticController = require('./controllers/static');
 var moodsController = require('./controllers/moods');
 var polygonsController = require('./controllers/polygons');
@@ -48,6 +48,7 @@ app.use(function(req,res) {
 	res.sendStatus(404);
 });
 
+//server starting
 var server = app.listen(app.get('port'), function() {
 	var port = server.address().port;
 	console.log('Express server listening on port %s', port);
