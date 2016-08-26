@@ -4,6 +4,7 @@
  */
 
 //required files
+var MainController = require('./main.js');
 var Polygon = require('../models/Polygon.js');
 var Mood = require('../models/Mood.js');
 
@@ -16,7 +17,7 @@ function getPolygonData(polygon,filter) {
       			$geometry: {type: polygon.geometry.type, coordinates: polygon.geometry.coordinates}
    			}
    		};
-
+   		console.log(filter);
 		Mood.find(filter,function(err, moods){
    				if(err) {
    					reject();
@@ -26,7 +27,7 @@ function getPolygonData(polygon,filter) {
    					if (moods.length) {
        					var sum = 0;
        					moods.forEach(function(mood){
-       						sum += mood.mood;
+       						sum += MainController.getMoodValue(mood);
        					});
        					var average = Math.round(sum / moods.length);
    						console.log(average);

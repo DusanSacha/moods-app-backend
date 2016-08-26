@@ -4,6 +4,7 @@
  */
 
 //required files
+var MainController = require('./main.js');
 var Mood = require('../models/Mood.js');
 var Region = require('../models/Region.js');
 var StaticTrend = require('../models/StaticTrend.js');
@@ -62,7 +63,7 @@ exports.sendMood = function(req,res) {
 exports.getPercentage = function(req,res) {
 	var now = new Date();
 	var yesterday = new Date();
-	yesterday.setDate(now.getDate() - 1);
+	yesterday.setDate(now.getDate() - 30);
 
 	var hashtag = req.params.hash;
 	var age = req.query.a;
@@ -91,41 +92,74 @@ exports.getPercentage = function(req,res) {
 			age:{"$in":age},
 			gender:{"$in":gender},
 			education:{"$in":education}
-		};
+	};
 
-	Mood.count(filter,
-		function(err, countAll) {
+	//find all moods data
+	Mood.find(filter,
+		function(err, resultAll) {
 	 		if (err) {
 		  		res.sendStatus(500);
 		  		console.error(err);
 		  	} else {
+		  		//count value of all moods
+		  		var countAll = 0;
+		  		resultAll.forEach(function(mood) {
+					countAll += MainController.getMoodValue(mood);
+				});
+		  		//find single mood data
 		  		filter.hashtag = hashtag;
-	  		 	Mood.count(filter,
-	  		 		function(err, countSingle) {
+	  		 	Mood.find(filter,
+	  		 		function(err, resultSingle) {
 				 		if (err) {
 					  		res.sendStatus(500);
 					  		console.error(err);
 					  	} else {
+
+					  		//count value of single mood
+					  		var countSingle = 0;
+					  		resultSingle.forEach(function(mood) {
+								countSingle += MainController.getMoodValue(mood);
+							});
+
+					  		//count percentage for single mood chart - number in the middle of the chart
 					  		var percent_sum = Math.round(countSingle / (countAll / 100));
 					  		(isNaN(percent_sum)) ? (percent_sum = 0) : null;
 
+					  		//find negative values for a single mood chart
 					  		filter.mood = {"$in":[0,1,2,3]};
-				  			Mood.count(filter,
-				  				function(err, countNegative) {
+				  			Mood.find(filter,
+				  				function(err, resultNegative) {
 				  				if (err) {
 					  				res.sendStatus(500);
 					  				console.error(err);
 					  			} else {
+
+					  				//count negative value of single mood
+					  				var countNegative = 0;
+							  		resultNegative.forEach(function(mood) {
+										countNegative += MainController.getMoodValue(mood);
+									});
+
+							  		//count percentage of negative value for single mood
 					  				var percent_neg = Math.round(countNegative / (countSingle / 100));
 					  				(isNaN(percent_neg)) ? (percent_neg = 0) : null;
 
+					  				//find positive values for a single mood chart
 					  				filter.mood = {"$in":[7,8,9,10]};
-					  				Mood.count (filter,
-					  					function(err,countPositive){
+					  				Mood.find(filter,
+					  					function(err,resultPositive){
 					  					if (err) {
 					  						res.sendStatus(500);
 					  						console.error(err);					  						
 					  					} else {
+
+					  				//count positive value of single mood
+					  						var countPositive = 0;
+									  		resultPositive.forEach(function(mood) {
+												countPositive += MainController.getMoodValue(mood);
+											});
+
+							  		//count percentage of positive value for single mood
 					  						var percent_pos = Math.round(countPositive / (countSingle / 100));
 					  						(isNaN(percent_pos)) ? (percent_pos = 0) : null;
 
@@ -153,4 +187,5 @@ exports.getPercentage = function(req,res) {
 		  	}
 		}
 	);
+
 };
