@@ -21,6 +21,8 @@ var allowCrossDomain = function(req, res, next) {
     }
 };
 
+
+
 app.use(allowCrossDomain);
 
 //Controllers definition
