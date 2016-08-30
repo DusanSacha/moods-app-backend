@@ -32,13 +32,13 @@ function getPolygonData(polygon,filter) {
        					var average = Math.round(sum / moods.length);
    						console.log(average);
    						switch (true) {
-       						case (average <= 3):
+       						case (average <= 4):
        							polygon.properties.fill = "#ff2600";  // red
        							break;
-							case (average > 3 && average < 7 ):
+							case (average > 4 && average < 8 ):
        							polygon.properties.fill = "#c7c732"; // orange
        							break;
-       						case (average >= 7 && average <= 10 ):
+       						case (average >= 8 && average <= 11 ):
        							polygon.properties.fill = "#1fa305";  // green
        							break; 
        					}

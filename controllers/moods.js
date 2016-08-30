@@ -126,7 +126,7 @@ exports.getPercentage = function(req,res) {
 					  		(isNaN(percent_sum)) ? (percent_sum = 0) : null;
 
 					  		//find negative values for a single mood chart
-					  		filter.mood = {"$in":[0,1,2,3]};
+					  		filter.mood = {"$in":[1,2,3,4]};
 				  			Mood.find(filter,
 				  				function(err, resultNegative) {
 				  				if (err) {
@@ -145,7 +145,7 @@ exports.getPercentage = function(req,res) {
 					  				(isNaN(percent_neg)) ? (percent_neg = 0) : null;
 
 					  				//find positive values for a single mood chart
-					  				filter.mood = {"$in":[7,8,9,10]};
+					  				filter.mood = {"$in":[8,9,10,11]};
 					  				Mood.find(filter,
 					  					function(err,resultPositive){
 					  					if (err) {
