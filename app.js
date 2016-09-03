@@ -29,6 +29,7 @@ app.use(allowCrossDomain);
 var staticController = require('./controllers/static');
 var moodsController = require('./controllers/moods');
 var polygonsController = require('./controllers/polygons');
+var newslettersController = require('./controllers/newsletters');
 
 //Database Connection 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/moods');
@@ -45,6 +46,7 @@ app.get('/static_trends', staticController.staticData);
 app.post('/moods', moodsController.sendMood);
 app.get('/hashtag/:hash', moodsController.getPercentage);
 app.post('/map', polygonsController.getPolygons);
+app.post('/newsletter', newslettersController.saveNewsletter);
 
 app.use(function(req,res) {
 	res.sendStatus(404);
