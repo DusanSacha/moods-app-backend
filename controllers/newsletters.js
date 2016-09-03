@@ -11,7 +11,7 @@ exports.saveNewsletter = function(req,res) {
 
 	newsletter.save(function (err, newsletter) {
 	  if (err) {
-	  	res.send(500);
+	  	res.sendStatus(500);
 	  	console.error(err);
 	  } else {
 	  	res.sendStatus(200);
