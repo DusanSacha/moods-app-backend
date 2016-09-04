@@ -18,3 +18,15 @@ exports.saveNewsletter = function(req,res) {
 	  }
 	});
 };
+
+exports.getNewsletter = function(req,res) {
+
+	Newsletter.find(function (err, subscribers) {
+	  if (err) {
+	  	res.sendStatus(500);
+	  	console.error(err);
+	  } else {
+	  	res.send(subscribers);
+	  }
+	});
+};

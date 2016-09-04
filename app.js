@@ -47,6 +47,7 @@ app.post('/moods', moodsController.sendMood);
 app.get('/hashtag/:hash', moodsController.getPercentage);
 app.post('/map', polygonsController.getPolygons);
 app.post('/newsletter', newslettersController.saveNewsletter);
+app.get('/newsletter', newslettersController.getNewsletter);
 
 app.use(function(req,res) {
 	res.sendStatus(404);
@@ -57,3 +58,4 @@ var server = app.listen(app.get('port'), function() {
 	var port = server.address().port;
 	console.log('Express server listening on port %s', port);
 })
+
