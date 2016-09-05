@@ -8,7 +8,8 @@ var polygonSchema = new mongoose.Schema({
 		title: String,
 		name: String,
 		fill: String,
-		"fill-opacity": Number
+		"fill-opacity": Number,
+		"stroke-width": Number
 	},
 	geometry: mongoose.Schema.Types.GeoJSON
 });
