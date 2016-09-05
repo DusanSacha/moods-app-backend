@@ -21,12 +21,20 @@ exports.saveNewsletter = function(req,res) {
 
 exports.getNewsletter = function(req,res) {
 
-	Newsletter.find(function (err, subscribers) {
-	  if (err) {
-	  	res.sendStatus(500);
-	  	console.error(err);
-	  } else {
-	  	res.send(subscribers);
-	  }
-	});
+	var cdxgetdata = req.query.cdxgetdata;
+
+	if (cdxgetdata == 'cadaxo') { 
+
+		Newsletter.find(function (err, subscribers) {
+		  if (err) {
+		  	res.sendStatus(500);
+		  	console.error(err);
+		  } else {
+		  	res.send(subscribers);
+		  }
+		});
+
+	} else {
+		res.sendStatus(500);
+	} 
 };
