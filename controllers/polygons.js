@@ -43,6 +43,7 @@ function getPolygonData(polygon,filter) {
        							break; 
        					}
        					polygon.properties["fill-opacity"] = 0.5;
+       					polygon.properties["stroke-width"] = 0.5;
 						      					
 		   			}
 					resolve(polygon);
