@@ -5,7 +5,7 @@ var bodyParser = require('body-parser'); //important for reading request paramet
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.set('port', (process.env.PORT || 5000)); //port check: 5000 = localhost
-
+app.set('etag', false);  //disable 304 Status code
 //allowing OPTIONS method
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
