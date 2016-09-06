@@ -26,11 +26,15 @@ function getPolygonData(polygon,filter) {
    					//then count the average and send out the color paramters
    					if (moods.length) {
        					var sum = 0;
+       					var divisor = 0;
        					moods.forEach(function(mood){
-       						sum += MainController.getMoodValue(mood);
+       						sum += MainController.getMoodValues(mood)[0];
+       						divisor += MainController.getMoodValues(mood)[1];
        					});
-       					var average = Math.round(sum / moods.length);
-   						console.log(average);
+
+       					var average = Math.round(sum / divisor);
+       					(isNaN(average)) ? (average = 0) : null;
+
    						switch (true) {
        						case (average <= 4):
        							polygon.properties.fill = "#ff2600";  // red
