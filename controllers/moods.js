@@ -110,7 +110,7 @@ exports.getPercentage = function(req,res) {
 					divisor += MainController.getMoodValues(mood)[1];
 				});
 
-		  		var average_mood = Math.round(count / divisor);
+		  		var average_mood = count / divisor;
 		  		(isNaN(average_mood)) ? (average_mood = 0) : null;
 
 		  		res.send({
