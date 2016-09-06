@@ -66,7 +66,7 @@ exports.getPolygons = function(req,res) {
 
 	if (hashtag.length == 0) {
 		hashtag[0] = "vanderbellen";
-		hashtag[1] = "wahlen2016";
+		hashtag[1] = "bpw16";
 		hashtag[2] = "norberthofer";
 	}
 
