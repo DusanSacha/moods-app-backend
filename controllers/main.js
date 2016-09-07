@@ -22,6 +22,10 @@ exports.getMoodValues = function(mood) {
 	var moodValue = 1;
 	var moodDivisor = 1;
 
+	if (mood.mood === undefined) {
+		return [0,0];
+	}
+
 	switch (true) {
 		case (dateDiff <= 432000000): //Mood is 0-5 days old
 			moodValue = mood.mood;
