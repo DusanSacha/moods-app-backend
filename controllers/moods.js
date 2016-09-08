@@ -64,7 +64,9 @@ exports.getPercentage = function(req,res) {
 	var now = new Date();
 	var pastDate = new Date();
 	pastDate.setDate(now.getDate() - 30);
-
+	var age = req.query.a;
+	var education = req.query.e;
+	var gender = req.query.g;	
 	var hashtag = req.params.hash;
 
 	var filter = {
@@ -73,27 +75,32 @@ exports.getPercentage = function(req,res) {
 	};
 
 	
-	var age = req.query.a;
 	if (age === undefined) {
 		age = [];
 	} else if (!(age instanceof Array)) {
 		age = [parseInt(age)];
 		filter.age = {"$in":age};
+	} else {
+		filter.age = {"$in":age};
 	}
 
-	var gender = req.query.g;
+
 	if (gender === undefined) {
 		gender = [];
 	} else if (!(gender instanceof Array)) {
 		gender = [(gender)];
 		filter.gender = {"$in":gender};
+	} else {
+		filter.gender = {"$in":gender};
 	}
 
-	var education = req.query.e;
+
 	if (education === undefined) {
 		education = [];
 	} else if (!(education instanceof Array)) {
 		education = [parseInt(education)];
+		filter.education = {"$in":education};
+	} else {
 		filter.education = {"$in":education};
 	}
 

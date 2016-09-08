@@ -75,11 +75,38 @@ exports.getPolygons = function(req,res) {
 	}
 
 	var filter = {
-		age:{"$in":age},
-		gender:{"$in":gender},
-		education:{"$in":education},
 		hashtag:{"$in":hashtag}
 	};
+
+
+	if (age === undefined) {
+		age = [];
+	} else if (!(age instanceof Array)) {
+		age = [parseInt(age)];
+		filter.age = {"$in":age};
+	} else {
+		filter.age = {"$in":age};
+	}
+
+	if (gender === undefined) {
+		gender = [];
+	} else if (!(gender instanceof Array)) {
+		gender = [(gender)];
+		filter.gender = {"$in":gender};
+	} else {
+		filter.gender = {"$in":gender};
+	}
+
+
+	if (education === undefined) {
+		education = [];
+	} else if (!(education instanceof Array)) {
+		education = [parseInt(education)];
+		filter.education = {"$in":education};
+	} else {
+		filter.education = {"$in":education};
+	}
+
 
 	var screen = {
 	    geometry: {
