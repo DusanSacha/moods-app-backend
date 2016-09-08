@@ -2,7 +2,6 @@
  * Polygons controller module.
  * @module controllers/polygons
  */
-
 //required files
 var MainController = require('./main.js');
 var Polygon = require('../models/Polygon.js');
@@ -37,13 +36,13 @@ function getPolygonData(polygon,filter) {
 
    						switch (true) {
        						case (average <= 4):
-       							polygon.properties.fill = "#ff2600";  // red
+       							polygon.properties.fill = "#FA6540";  // red
        							break;
 							case (average > 4 && average < 8 ):
-       							polygon.properties.fill = "#c7c732"; // orange
+       							polygon.properties.fill = "#FFB703"; // orange
        							break;
        						case (average >= 8 && average <= 11 ):
-       							polygon.properties.fill = "#1fa305";  // green
+       							polygon.properties.fill = "#40681B";  // green
        							break; 
        					}
        					polygon.properties["fill-opacity"] = 0.5;
