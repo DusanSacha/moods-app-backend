@@ -62,15 +62,23 @@ exports.sendMood = function(req,res) {
 
 exports.getPercentage = function(req,res) {
 	var now = new Date();
-	var yesterday = new Date();
-	yesterday.setDate(now.getDate() - 30);
+	var pastDate = new Date();
+	pastDate.setDate(now.getDate() - 30);
 
 	var hashtag = req.params.hash;
+
+	var filter = {
+		created:{"$gte": pastDate,"$lte": now},
+		hashtag: hashtag
+	};
+
+	
 	var age = req.query.a;
 	if (age === undefined) {
 		age = [];
 	} else if (!(age instanceof Array)) {
 		age = [parseInt(age)];
+		filter.age = {"$in":age};
 	}
 
 	var gender = req.query.g;
@@ -78,6 +86,7 @@ exports.getPercentage = function(req,res) {
 		gender = [];
 	} else if (!(gender instanceof Array)) {
 		gender = [(gender)];
+		filter.gender = {"$in":gender};
 	}
 
 	var education = req.query.e;
@@ -85,15 +94,9 @@ exports.getPercentage = function(req,res) {
 		education = [];
 	} else if (!(education instanceof Array)) {
 		education = [parseInt(education)];
+		filter.education = {"$in":education};
 	}
 
-	var filter = {
-			created:{"$gte": yesterday,"$lte": now},
-			age:{"$in":age},
-			gender:{"$in":gender},
-			education:{"$in":education},
-			hashtag: hashtag
-	};
 
 	//find all moods data
 	Mood.find(filter,
