@@ -78,6 +78,7 @@ exports.getPolygons = function(req,res) {
 	};
 
 
+  console.log(typeof age);
 	if (typeof age === "undefined") {
 		age = [];
 	} else if (!(age instanceof Array)) {
