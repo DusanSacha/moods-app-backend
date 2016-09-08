@@ -2,7 +2,7 @@
  * StaticTrend controller module.
  * @module controllers/static
  */
-
+//Domi
 var StaticTrend = require('../models/StaticTrend.js');
 
 exports.staticData = function(req,res) {
