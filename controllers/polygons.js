@@ -92,7 +92,7 @@ exports.getPolygons = function(req,res) {
 	} else if (!(gender instanceof Array)) {
 		gender = [(gender)];
 		filter.gender = {"$in":gender};
-	} else if ( filter.age.lenght > 0 ) {
+	} else if ( filter.gender.lenght > 0 ) {
 		filter.gender = {"$in":gender};
 	}
 
@@ -102,7 +102,7 @@ exports.getPolygons = function(req,res) {
 	} else if (!(education instanceof Array)) {
 		education = [parseInt(education)];
 		filter.education = {"$in":education};
-	} else if ( filter.age.lenght > 0 ) {
+	} else if ( filter.education.lenght > 0 ) {
 		filter.education = {"$in":education};
 	}
 
