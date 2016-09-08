@@ -78,7 +78,7 @@ exports.getPolygons = function(req,res) {
 	};
 
 
-	if (age === undefined) {
+	if (typeof age === "undefined") {
 		age = [];
 	} else if (!(age instanceof Array)) {
 		age = [parseInt(age)];
@@ -87,7 +87,7 @@ exports.getPolygons = function(req,res) {
 		filter.age = {"$in":age};
 	}
 
-	if (gender === undefined) {
+	if (typeof gender === "undefined") {
 		gender = [];
 	} else if (!(gender instanceof Array)) {
 		gender = [(gender)];
@@ -97,7 +97,7 @@ exports.getPolygons = function(req,res) {
 	}
 
 
-	if (education === undefined) {
+	if (typeof education === "undefined") {
 		education = [];
 	} else if (!(education instanceof Array)) {
 		education = [parseInt(education)];
