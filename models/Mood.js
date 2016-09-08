@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var moodSchema = new mongoose.Schema({
-  mood: { type: Number, min: 1, max: 11 },
+  mood: { type: Number, min: 1, max: 11, required: true},
   hashtag: String,
   location: { type: {type: String, enum: "Point", default: "Point"}, coordinates: { type: [Number], default: [0,0]} },
   ip: String,
