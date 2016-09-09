@@ -17,6 +17,7 @@ exports.staticData = function(req,res) {
 			});
       */
       console.error(trends);
+      
 	  	res.send(trends);
 	  }
 	});
