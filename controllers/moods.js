@@ -52,7 +52,7 @@ exports.sendMood = function(req,res) {
 		  	res.sendStatus(500);
 		  	console.error(err);
 		  } else {
-		  	res.sendStatus(200);	
+        res.status(200).send("No Mood");
 		  }
 
 		});
@@ -104,6 +104,8 @@ exports.getPercentage = function(req,res) {
 		filter.education = {"$in":education};
 	}
 
+  //get count of all Moods
+    var overallCount = "1 Tsd";
 
 	//find all moods data
 	Mood.find(filter,
@@ -126,9 +128,11 @@ exports.getPercentage = function(req,res) {
 		  		res.send({
 			  		hashtag: hashtag,
 			  		average_mood: average_mood,
-					age:age,
-					gender:gender,
-					education:education
+            age:age,
+					  gender:gender,
+					  education:education,
+            moodCountTxt:result.lenght,
+            moodCountTotalTxt: overallCount
 	 			});	
 
 		  	}
