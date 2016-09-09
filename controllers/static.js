@@ -10,13 +10,13 @@ exports.staticData = function(req,res) {
 	  	res.sendStatus(500);
 	  	console.error(err);
 	  } else {
-    /*
-      trends.trendlistCount = [];
-      trends.trendlist.forEach(function(sHashtag) {
-        trends.trendlistCount.push([sHashtag,"234"]);    
+    
+      trends[0].trendlistCount = [];
+      trends[0].trendlist.forEach(function(sHashtag) {
+        trends[0].trendlistCount.push([sHashtag,"123"]);    
 			});
-      */
       console.log(trends);
+      //array of Objects
 	  	res.send(trends);
 	  }
 	});
