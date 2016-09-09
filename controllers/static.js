@@ -2,24 +2,32 @@
  * StaticTrend controller module.
  * @module controllers/static
  */
+var MainController = require('./main.js'); 
 var StaticTrend = require('../models/StaticTrend.js');
+var Mood = require('../models/Mood.js');
 
 exports.staticData = function(req,res) {
+  var oTrends = null;
 	StaticTrend.find(function (err, trends) {
 	  if (err) {
 	  	res.sendStatus(500);
 	  	console.error(err);
 	  } else {
-      trends[0].trendlistCount = [];
-      trends[0].trendlist.forEach(function(sHashtag) {
-        trends[0].trendlistCount.push([sHashtag,"123"]);    
+      oTrends = trends[0].toObject();
+      oTrends.trendlistCount = [];
+      var aPromises = [];
+      oTrends.trendlist.forEach(function(sHashtag) {
+        	aPromises.push(Mood.count({"hashtag": sHashtag}).exec());
 			});
-      console.log("trends");
-      console.log(trends[0]);
-      console.log(typeof trends);
-      console.log(typeof trends[0]);
-      //array of Objects
-	  	res.send(trends);
+	    	Promise.all(aPromises).then(function (result){
+          oTrends.trendlist.forEach(function(sHashtag,iIndex) {
+            oTrends.trendlistCount.push([sHashtag,result[iIndex],MainController.getCountText(result[iIndex])]);
+			    });
+          res.send(oTrends);
+	    	})
+        .catch(function(err) {
+  			   console.log(err.message);
+			  });
 	  }
 	});
 };

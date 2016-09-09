@@ -53,3 +53,20 @@ exports.getMoodValues = function(mood) {
 	
 	return [moodValue, moodDivisor];
 };
+
+
+/** Get Count Text
+*  Return a Text for the count
+*/
+exports.getCountText = function(iCount) {
+
+  var sText = "";
+  switch(true){
+  case ( iCount < 1000 ): sText = iCount+""; break;
+  case ( iCount < 1000000 ): 
+    var sFirstDigit = String(iCount).charAt(0);
+    sText = sFirstDigit + " Tsd"
+    break;
+  }
+	return sText;
+};

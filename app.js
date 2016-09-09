@@ -33,6 +33,7 @@ var newslettersController = require('./controllers/newsletters');
 
 //Database Connection 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/moods');
+mongoose.Promise = global.Promise;
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

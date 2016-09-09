@@ -105,8 +105,10 @@ exports.getPercentage = function(req,res) {
 	}
 
   //get count of all Moods
-    var overallCount = "1 Tsd";
-
+    var sOverallCount = "";
+    var sCount = "";
+    Mood.count({"hashtag": hashtag}).exec().then(function(count){ sOverallCount = MainController.getCountText(count)});
+    console.log(filter);
 	//find all moods data
 	Mood.find(filter,
 		function(err, result) {
@@ -114,6 +116,7 @@ exports.getPercentage = function(req,res) {
 		  		res.sendStatus(500);
 		  		console.error(err);
 		  	} else {
+          sCount = result.length;
 		  		var count = 0;
 		  		var divisor = 0;
 		  		result.forEach(function(mood) {
@@ -130,8 +133,8 @@ exports.getPercentage = function(req,res) {
             age:age,
 					  gender:gender,
 					  education:education,
-            moodCountTxt: "" + result.length,
-            moodCountTotalTxt: overallCount
+            moodCountTxt: MainController.getCountText(sCount),
+            moodCountTotalTxt: sOverallCount
 	 			});	
 
 		  	}
