@@ -16,8 +16,7 @@ exports.staticData = function(req,res) {
         trends[0].trendlistCount.push([sHashtag,"123"]);    
 			});
       console.log("trends");
-      console.log(trends);
-      console.log(trends[0]);
+      console.log(typeof trends);
       //array of Objects
 	  	res.send(trends);
 	  }
