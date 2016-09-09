@@ -123,15 +123,15 @@ exports.getPercentage = function(req,res) {
 
 		  		var average_mood = count / divisor;
 		  		(isNaN(average_mood)) ? (average_mood = 0) : null;
-          consol.log(result);
-          consol.log(result.lenght);
+          console.log(result);
+          console.log(result.lenght);
 		  		res.send({
 			  		hashtag: hashtag,
 			  		average_mood: average_mood,
             age:age,
 					  gender:gender,
 					  education:education,
-            moodCountTxt: result.lenght,
+            moodCountTxt: "765"
             moodCountTotalTxt: overallCount
 	 			});	
 
