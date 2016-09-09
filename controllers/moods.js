@@ -131,7 +131,7 @@ exports.getPercentage = function(req,res) {
             age:age,
 					  gender:gender,
 					  education:education,
-            moodCountTxt: "765"
+            moodCountTxt: "765",
             moodCountTotalTxt: overallCount
 	 			});	
 
