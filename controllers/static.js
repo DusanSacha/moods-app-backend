@@ -16,8 +16,7 @@ exports.staticData = function(req,res) {
         trends.trendlistCount.push([sHashtag,"234"]);    
 			});
       */
-      console.error(trends);
-      
+      console.log(trends);
 	  	res.send(trends);
 	  }
 	});

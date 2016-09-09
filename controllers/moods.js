@@ -114,7 +114,6 @@ exports.getPercentage = function(req,res) {
 		  		res.sendStatus(500);
 		  		console.error(err);
 		  	} else {
-		  		
 		  		var count = 0;
 		  		var divisor = 0;
 		  		result.forEach(function(mood) {
@@ -124,7 +123,6 @@ exports.getPercentage = function(req,res) {
 
 		  		var average_mood = count / divisor;
 		  		(isNaN(average_mood)) ? (average_mood = 0) : null;
-          
           consol.log(result);
           consol.log(result.lenght);
 		  		res.send({
