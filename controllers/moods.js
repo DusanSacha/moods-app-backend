@@ -69,6 +69,7 @@ exports.getPercentage = function(req,res) {
 	var gender = req.query.g;	
 	var hashtag = req.params.hash;
 
+  console.log(req.headers);
 	var filter = {
 		created:{"$gte": pastDate,"$lte": now},
 		hashtag: hashtag
@@ -108,7 +109,6 @@ exports.getPercentage = function(req,res) {
     var sOverallCount = "";
     var sCount = "";
     Mood.count({"hashtag": hashtag}).exec().then(function(count){ sOverallCount = MainController.getCountText(count)});
-    console.log(filter);
 	//find all moods data
 	Mood.find(filter,
 		function(err, result) {
