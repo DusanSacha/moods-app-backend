@@ -52,7 +52,7 @@ exports.sendMood = function(req,res) {
 		  	res.sendStatus(500);
 		  	console.error(err);
 		  } else {
-		  	res.sendStatus(200);	
+        res.status(200).send("No Mood");
 		  }
 
 		});
@@ -69,6 +69,7 @@ exports.getPercentage = function(req,res) {
 	var gender = req.query.g;	
 	var hashtag = req.params.hash;
 
+  console.log(req.headers);
 	var filter = {
 		created:{"$gte": pastDate,"$lte": now},
 		hashtag: hashtag
@@ -104,7 +105,10 @@ exports.getPercentage = function(req,res) {
 		filter.education = {"$in":education};
 	}
 
-
+  //get count of all Moods
+    var sOverallCount = "";
+    var sCount = "";
+    Mood.count({"hashtag": hashtag}).exec().then(function(count){ sOverallCount = MainController.getCountText(count)});
 	//find all moods data
 	Mood.find(filter,
 		function(err, result) {
@@ -112,7 +116,7 @@ exports.getPercentage = function(req,res) {
 		  		res.sendStatus(500);
 		  		console.error(err);
 		  	} else {
-		  		
+          sCount = result.length;
 		  		var count = 0;
 		  		var divisor = 0;
 		  		result.forEach(function(mood) {
@@ -126,9 +130,11 @@ exports.getPercentage = function(req,res) {
 		  		res.send({
 			  		hashtag: hashtag,
 			  		average_mood: average_mood,
-					age:age,
-					gender:gender,
-					education:education
+            age:age,
+					  gender:gender,
+					  education:education,
+            moodCountTxt: MainController.getCountText(sCount),
+            moodCountTotalTxt: sOverallCount
 	 			});	
 
 		  	}
