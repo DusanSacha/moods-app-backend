@@ -6,24 +6,46 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.set('port', (process.env.PORT || 5000)); //port check: 5000 = localhost
 app.set('etag', false);  //disable 304 Status code
+
 //allowing OPTIONS method
 var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-
-    // intercept OPTIONS method
-    if ('OPTIONS' == req.method) {
-      res.send(200);
-    }
-    else {
-      next();
+    res.header("Access-Control-Allow-Origin", "https://www.moods.world");
+    res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With");
+    res.header("X-Frame-Options","SAMEORIGIN");
+    res.header("X-Xss-Protection", "1; mode=block");
+    res.header("X-Content-Type-Options", "nosniff");
+    console.log(req.headers.origin); 
+    if (req.headers.origin !== "https://www.moods.world" && req.headers.origin !== "chrome-extension://fdmmgilgnpjigdojojpjoooidkmcomcm"){
+      res.status(403).end();
+    }else{
+      // intercept OPTIONS method
+      if ('OPTIONS' === req.method) {
+        res.send(200);
+      }
+      else {
+        next();
+      }  
     }
 };
 
+var doSomeSpamChecks = function(req, res, next) {
+  next();
+};
 
 
+app.disable('X-Powered-By');
+app.disable('Via');
+app.disable('Server');
+app.use(function (req, res, next) {
+  res.removeHeader("X-Powered-By");
+  res.removeHeader("Via");
+  res.removeHeader("Server");
+  next();
+});
 app.use(allowCrossDomain);
+app.use(doSomeSpamChecks);
+    
 
 //Controllers definition
 var staticController = require('./controllers/static');
