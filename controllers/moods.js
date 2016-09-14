@@ -13,27 +13,17 @@ var StaticTrend = require('../models/StaticTrend.js');
  *	
  */
 exports.sendMood = function(req, res) {
-<<<<<<< HEAD
 	var iMin = 2;
 	var sActionText = "";
 	req.body.ip = req.connection.remoteAddress;
 	var mood = new Mood(req.body);
 
-=======
-
-	var iMin = 15;
-	var sActionText = "";
-	req.body.ip = req.connection.remoteAddress;
-	var mood = new Mood(req.body);
-
->>>>>>> origin/master
 	StaticTrend.count({
 			"hashtag": mood.hashtag
 		}).then(function(result) {})
 		.catch(function(result) {
 			mood.hashtag = "HACK " + mood.hashtag;
 		});
-<<<<<<< HEAD
 
 	var dNow = new Date();
 	var dLastMood = new Date(dNow.getTime() - (iMin * 60000));
@@ -72,7 +62,7 @@ exports.sendMood = function(req, res) {
 				sFastText = idiff + " Minuten ";
 			}
 
-			sActionText = "Uuups, zu schnell gemooded.<br />Um Manipulationen zu vermeiden, kannst du<br /><b>#" + mood.hashtag + "</b><br />" +
+			sActionText = "Uuups, zu schnell gemooded.\nUm Manipulationen zu vermeiden, kannst du\n<b>#" + mood.hashtag + "</b>\n" +
                     "erst in <b>" + sFastText +	"</b>wieder mooden";
 			res.status(429).send(sActionText);
 			console.log("Ups");
@@ -112,86 +102,6 @@ exports.sendMood = function(req, res) {
 
 				mood.save(function(err, mood) {
 
-=======
-
-	var dNow = new Date();
-	var dLastMood = new Date(dNow.getTime() - (iMin * 60000));
-
-	//find({day: {$lt: 16085}}).sort({day: -1}).limit(1).exec((err, docs) => { ... });
-	Mood.find({
-			$and: [{
-				$or: [{
-					"ip": mood.ip
-				}, {
-					"user": mood.user
-				}]
-			}, {
-				"hashtag": mood.hashtag
-			}, {
-				"created": {
-					$gt: dLastMood.getTime()
-				}
-			}]
-		})
-		.sort({
-			created: -1
-		}).limit(1)
-		.then(function(result) {
-			sCreated = result[0].created;
-			dCreated = new Date(sCreated);
-			dDiff = new Date(dNow - dCreated);
-			console.log(dLastMood);
-			console.log(sCreated);
-			console.log(dNow);
-			idiff = 15 - dDiff.getMinutes();
-			if (idiff === 0) {
-				idiff = 60 - dDiff.getSeconds();
-				sFastText = idiff + " Sekunden ";
-			} else {
-				sFastText = idiff + " Minuten ";
-			}
-
-			sActionText = "Uuups, zu schnell gemooded. Um Manipulationen zu vermeiden, kannst du #" + mood.hashtag + " erst in " + sFastText +
-				"wieder mooden";
-			res.status(429).send(sActionText);
-			console.log("Ups");
-			return;
-		})
-		.catch(function() {
-			console.log("Save");
-			if (typeof req.body.location !== "undefined") {
-				if (mood.region > 9) {
-					mood.region = 0;
-				}
-
-				var region = mood.region;
-
-				Region.findOne({
-					regionId: region
-				}, function(err, location) {
-					if (err) {
-						res.sendStatus(500);
-						console.error(err);
-					} else {
-						mood.location = location.location;
-						mood.save(function(err, mood) {
-
-							if (err) {
-								res.sendStatus(500);
-								console.error(err);
-							} else {
-								res.status(201).send(sActionText);
-							}
-
-						});
-					}
-				});
-
-			} else {
-
-				mood.save(function(err, mood) {
-
->>>>>>> origin/master
 					if (err) {
 						res.sendStatus(500);
 						console.error(err);
