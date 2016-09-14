@@ -54,7 +54,7 @@ exports.sendMood = function(req, res) {
 			console.log(dLastMood);
 			console.log(sCreated);
 			console.log(dNow);
-			idiff = 15 - dDiff.getMinutes();
+			idiff = iMin - dDiff.getMinutes();
 			if (idiff === 0) {
 				idiff = 60 - dDiff.getSeconds();
 				sFastText = idiff + " Sekunden ";
