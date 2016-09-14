@@ -62,7 +62,7 @@ exports.sendMood = function(req, res) {
 				sFastText = idiff + " Minuten ";
 			}
 
-			sActionText = "<center>Uuups, zu schnell gemooded.<br />Um Manipulationen zu vermeiden, kannst du<br /><b>#" + mood.hashtag + "</b><br /> +
+			sActionText = "<center>Uuups, zu schnell gemooded.<br />Um Manipulationen zu vermeiden, kannst du<br /><b>#" + mood.hashtag + "</b><br />" +
                     "erst in <b>" + sFastText +	"</b>wieder mooden</center>";
 			res.status(429).send(sActionText);
 			console.log("Ups");
