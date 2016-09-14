@@ -13,7 +13,6 @@ var StaticTrend = require('../models/StaticTrend.js');
  *	
  */
 exports.sendMood = function(req, res) {
-
 	var iMin = 2;
 	var sActionText = "";
 	req.body.ip = req.connection.remoteAddress;
