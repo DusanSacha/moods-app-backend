@@ -70,7 +70,7 @@ exports.sendMood = function(req, res) {
 		})
 		.catch(function() {
 			console.log("Save");
-			if (typeof req.body.location !== "undefined") {
+			if (typeof req.body.location === "undefined") {
 				if (mood.region > 9) {
 					mood.region = 0;
 				}
