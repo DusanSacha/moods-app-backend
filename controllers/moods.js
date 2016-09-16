@@ -27,7 +27,7 @@ exports.sendMood = function(req, res) {
 
 	var dNow = new Date();
 	var dLastMood = new Date(dNow.getTime() - (iMin * 60000));
-
+console.log(mood.ip);
 	//find({day: {$lt: 16085}}).sort({day: -1}).limit(1).exec((err, docs) => { ... });
 	Mood.find({
 			$and: [{
@@ -70,7 +70,7 @@ exports.sendMood = function(req, res) {
 		})
 		.catch(function() {
 			console.log("Save");
-			if (typeof req.body.location !== "undefined") {
+			if (typeof req.body.location === "undefined") {
 				if (mood.region > 9) {
 					mood.region = 0;
 				}

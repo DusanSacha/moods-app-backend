@@ -16,7 +16,7 @@ var allowCrossDomain = function(req, res, next) {
     res.header("X-Xss-Protection", "1; mode=block");
     res.header("X-Content-Type-Options", "nosniff");
     console.log(req.headers.origin); 
-    if (req.headers.origin !== "https://www.moods.world" && req.headers.origin !== "chrome-extension://fdmmgilgnpjigdojojpjoooidkmcomcm"){
+    if (req.headers.origin !== "https://www.moods.world" && 1 == 2){
       res.status(403).end();
     }else{
       // intercept OPTIONS method
