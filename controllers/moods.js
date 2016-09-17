@@ -62,10 +62,10 @@ console.log(mood.ip);
 				sFastText = idiff + " Minuten ";
 			}
 
-			sActionText = "<center>Uuups, zu schnell gemooded.<br />Um Manipulationen zu vermeiden, kannst du<br /><b>#" + mood.hashtag + "</b><br />" +
+			sActionText = "<center>...zu schnell gemooded.<br />Um Manipulationen zu vermeiden, kannst du<br /><b>#" + mood.hashtag + "</b><br />" +
                     "erst in <b>" + sFastText +	"</b>wieder mooden</center>";
 			res.status(429).send(sActionText);
-			console.log("Ups");
+			console.log("Ups...");
 			return;
 		})
 		.catch(function() {
