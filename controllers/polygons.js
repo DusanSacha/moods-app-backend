@@ -34,17 +34,52 @@ function getPolygonData(polygon,filter) {
        					var average = Math.round(sum / divisor);
        					(isNaN(average)) ? (average = 0) : null;
 
-   						switch (true) {
+   						/*switch (average) {
        						case (average <= 4):
        							polygon.properties.fill = "#FA6540";  // red
        							break;
-							case (average > 4 && average < 8 ):
+							   case (average > 4 && average < 8 ):
        							polygon.properties.fill = "#FFB703"; // orange
        							break;
        						case (average >= 8 && average <= 11 ):
        							polygon.properties.fill = "#40681B";  // green
        							break; 
-       					}
+       					} */
+   						switch (average) {
+       						case 1:
+       							polygon.properties.fill = "#FA673E";  
+       							break;
+       						case 2:
+       							polygon.properties.fill = "#FA6D39";  
+       							break;
+       						case 3:
+       							polygon.properties.fill = "#FA7534";  
+       							break;
+       						case 4:
+       							polygon.properties.fill = "#FB8428";  
+       							break;
+       						case 5:
+       							polygon.properties.fill = "#FD9C17";  
+       							break;
+       						case 6:
+       							polygon.properties.fill = "#FFB603";  
+       							break;
+       						case 7:
+       							polygon.properties.fill = "#DEAB05";  
+       							break;
+       						case 8:
+       							polygon.properties.fill = "#AE960D";  
+       							break;
+       						case 9:
+       							polygon.properties.fill = "#818214";  
+       							break;
+       						case 10:
+       							polygon.properties.fill = "#516E19";  
+       							break;
+       						case 11:
+       							polygon.properties.fill = "#516E19";  
+       							break;
+       					}                
        					polygon.properties["fill-opacity"] = 0.5;
 		   			}
 

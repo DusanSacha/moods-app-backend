@@ -9,14 +9,12 @@ app.set('etag', false);  //disable 304 Status code
 
 //allowing OPTIONS method
 var allowCrossDomain = function(req, res, next) {
-    //res.header("Access-Control-Allow-Origin", "https://www.moods.world");
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "https://www.moods.world");
     res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With");
     res.header("X-Frame-Options","SAMEORIGIN");
     res.header("X-Xss-Protection", "1; mode=block");
     res.header("X-Content-Type-Options", "nosniff");
-    console.log(req.headers.origin); 
     if (req.headers.origin !== "https://www.moods.world" && 1 == 2){
       res.status(403).end();
     }else{
