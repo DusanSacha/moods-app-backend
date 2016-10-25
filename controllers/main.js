@@ -41,7 +41,8 @@ exports.getMoodValues = function(mood) {
 			moodValue = mood.mood * moodDivisor;
 			break;
 
-		case (dateDiff > 1728000000 && dateDiff <= 2592000000): //Mood is 20-30 days old
+//		case (dateDiff > 1728000000 && dateDiff <= 2592000000): //Mood is 20-30 days old
+		case (dateDiff > 1728000000): //Mood is 20-xxx days old
 			moodDivisor = 0.3;
 			moodValue = mood.mood * moodDivisor;
 			break;

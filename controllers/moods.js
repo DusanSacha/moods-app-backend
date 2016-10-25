@@ -118,7 +118,7 @@ console.log(mood.ip);
 exports.getPercentage = function(req, res) {
 	var now = new Date();
 	var pastDate = new Date();
-	pastDate.setDate(now.getDate() - 30);
+	pastDate.setDate(now.getDate() - 300);
 	var age = req.query.a;
 	var education = req.query.e;
 	var gender = req.query.g;
