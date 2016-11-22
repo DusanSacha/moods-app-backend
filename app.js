@@ -5,19 +5,18 @@ var bodyParser = require('body-parser'); //important for reading request paramet
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.set('port', (process.env.PORT || 5000)); //port check: 5000 = localhost
+app.set('url', (process.env.URL || "http://localhost")); //port check: 5000 = localhost
 app.set('etag', false);  //disable 304 Status code
 
 //allowing OPTIONS method
 var allowCrossDomain = function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "https://www.moods.world");
-//    res.header("Access-Control-Allow-Origin", "http://localhost");
+    res.header("Access-Control-Allow-Origin", app.get('url'));
     res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With");
     res.header("X-Frame-Options","SAMEORIGIN");
     res.header("X-Xss-Protection", "1; mode=block");
     res.header("X-Content-Type-Options", "nosniff");
-    if (req.headers.origin !== "https://www.moods.world" && 1 == 2){
-//    if (req.headers.origin !== "http://localhost" && 1 == 2){  
+    if (req.headers.origin !== app.get('url') && 1 == 2){
       res.status(403).end();
     }else{
       // intercept OPTIONS method
