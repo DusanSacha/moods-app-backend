@@ -66,7 +66,6 @@ db.once('open', function() {
 
 //Routes
 app.get('/static_trends', staticController.staticData);
-app.get('/static_trends_dev', staticController.staticDataDev);
 app.post('/moods', moodsController.sendMood);
 app.get('/hashtag/:hash', moodsController.getPercentage);
 app.post('/map', polygonsController.getPolygons);
